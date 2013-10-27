@@ -394,15 +394,7 @@ PRODUCT_COPY_FILES += \
 	device/zte/arthur/prebuilt/b08c/lib/libOmxWmaDec.so:system/lib/libOmxWmaDec.so \
         device/zte/arthur/prebuilt/files/lib/hw/lights.msm7x30.so:system/lib/hw/lights.msm7x30.so \
 
-# B08c framework Shit
-PRODUCT_COPY_FILES += \
-        device/zte/arthur/prebuilt/b08c/framework/qcnvitems.jar:system/framework/qcnvitems.jar \
-        device/zte/arthur/prebuilt/b08c/framework/qcrilhook.jar:system/framework/qcrilhook.jar \
-        device/zte/arthur/prebuilt/b08c/framework/sprint.jar:system/framework/sprint.jar \
-        device/zte/arthur/permissions/qcnvitems.xml:system/etc/permissions/qcnvitems.xml \
-        device/zte/arthur/permissions/qcrilhook.xml:system/etc/permissions/qcrilhook.xml
-
-# Bluez
+# Bluetooth configs
 PRODUCT_COPY_FILES += \
     system/bluetooth/data/audio.conf:system/etc/bluetooth/audio.conf \
     system/bluetooth/data/auto_pairing.conf:system/etc/bluetooth/auto_pairing.conf \
