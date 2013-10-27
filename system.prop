@@ -1,0 +1,120 @@
+#
+# system.prop for arthur
+#
+
+# Bluetooth
+qcom.bt.dev_power_class=2
+ro.qualcomm.bluetooth.dun=true
+
+wifi.interface=wlan0
+wlan.driver.status=ok
+wifi.supplicant_scan_interval=90
+wifi.supplicant_no_update_ctrl=true
+
+dalvik.vm.dexopt-data-only=1
+
+# Qualcomm
+com.qc.hardware=true
+ro.vendor.extension_library=/system/lib/libqc-opt.so
+debug.qctwa.statusbar=1
+debug.qctwa.preservebuf=1
+debug.qc.hardware=true
+
+mobiledata.interfaces=wlan0,rmnet0
+
+hwui.render_dirty_regions=false
+hwui.disable_vsync=false
+hwui.print_config=choice
+debug.sf.hw=1
+debug.composition.type=gpu
+debug.overlayui.enable=0
+dev.pm.dyn_samplingrate=1
+video.accelerate.hw=1
+ro.sf.lcd_density=240
+ro.sf.hwrotation=180
+
+# ADB
+persist.service.adb.enable=1
+# Don't set /proc/sys/vm/dirty_ratio to 0 when USB mounting
+ro.vold.umsdirtyratio=20
+persist.sys.usbcharger.enable=1
+
+#system props for the MM modules
+
+media.stagefright.enable-player=true
+media.stagefright.enable-http=true
+media.stagefright.enable-fma2dp=false
+media.stagefright.enable-aac=true
+media.stagefright.enable-qcp=true
+media.stagefright.enable-scan=true
+ro.media.dec.aud.wma.enabled=1
+ro.media.dec.vid.wmv.enabled=1
+
+#
+# system props for the data modules
+#
+ro.use_data_netmgrd=true
+persist.data_netmgrd_mtu=1500
+
+
+
+#Warp does not have HDMI, but phone wont boot without the following two lines
+persist.sys.hdmi.on=0
+ro.hdmi.enable=true
+
+#system props for time-services
+persist.timed.enable=true
+
+# System props for audio
+persist.audio.fluence.mode=endfire
+persist.audio.vr.enable=false
+
+#
+# system prop for opengles version
+#
+# 131072 is decimal for 0x20000 to report version 2
+ro.opengles.version=131072
+ro.opengles.surface.rgb565=true
+
+#
+# system prop for Bluetooth Auto connect for remote initated connections
+#
+ro.bluetooth.remote.autoconnect=true
+
+#
+# system prop for Bluetooth FTP profile
+#
+ro.qualcomm.bluetooth.ftp=true
+
+#
+# system prop for requesting Master role in incoming Bluetooth connection.
+#
+ro.bluetooth.request.master=true
+
+#
+# System prop for using landscape preview layout in camera
+#
+debug.camera.landscape=true
+
+# Tweaks for SilkUI 
+debug.sf.hw = 1
+debug.enabletr = true
+debug.qctwa.preservebuf = 1
+debug.egl.profiler=1
+debug.gr.swapinterval=1
+persist.sampling_profiler=0
+persist.sys.NV_FPSLIMIT=60
+persist.sys.ui.hw=1
+persist.sys.use_16bpp_alpha=1
+persist.sys.use_dithering=1
+persist.service.lgospd.enable=0
+persist.service.pcsync.enable=0
+
+# Dns
+net.rmnet0.dns1=8.8.8.8
+net.rmnet0.dns2=8.8.4.4
+net.dns1=8.8.8.8
+net.dns2=8.8.4.4
+
+# Memory
+ro.dev.dmm=1
