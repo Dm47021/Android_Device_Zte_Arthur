@@ -1,7 +1,13 @@
 $(call inherit-product, build/target/product/full.mk)
 
 $(call inherit-product, build/target/product/languages_small.mk)
+
+ifeq ($(TARGET_IS_CYANOGENMOD),true)
+$(call inherit-product, vendor/cm/config/common.mk)
+endif
+ifeq ($(TARGET_IS_CHAMELEONOS),true)
 $(call inherit-product, vendor/cos/config/common.mk)
+endif
 
 # The gps config appropriate for this device
 $(call inherit-product, device/common/gps/gps_us_supl.mk)
@@ -92,7 +98,7 @@ PRODUCT_PACKAGES += \
 
 # Power HAL
 PRODUCT_PACKAGES += \
-        power.msm7x30
+        power.arthur
 
 # Sensors 
 PRODUCT_PACKAGES += \
@@ -135,34 +141,11 @@ PRODUCT_PACKAGES += \
 
 # Root
 PRODUCT_COPY_FILES += \
-    device/zte/arthur/root/default.prop:/root/default.prop \
-    device/zte/arthur/root/init.rc:/root/init.rc \
-    device/zte/arthur/root/init.arthur.rc:/root/init.arthur.rc \
-    device/zte/arthur/root/fstab.arthur:/root/fstab.arthur \
-    device/zte/arthur/root/initlogo.rle:/root/initlogo.rle \
-    device/zte/arthur/root/init.qcom.sh:/root/init.qcom.sh \
-    device/zte/arthur/root/logo.bmp:/root/logo.bmp \
-    device/zte/arthur/root/ueventd.arthur.rc:/root/ueventd.arthur.rc \
-    device/zte/arthur/root/sbin/diagftmtest:/root/sbin/diagftmtest \
-    device/zte/arthur/root/sbin/hci_qcomm_init:/root/sbin/hci_qcomm_init \
-    device/zte/arthur/root/sbin/iwmulticall:/root/sbin/iwmulticall \
-    device/zte/arthur/root/sbin/iwpriv:/root/sbin/iwpriv \
-    device/zte/arthur/root/sbin/membank.sh:/root/sbin/membank.sh \
-    device/zte/arthur/root/sbin/ptt_socket_app:/root/sbin/ptt_socket_app \
-    device/zte/arthur/root/sbin/rmt_storage:/root/sbin/rmt_storage \
-    device/zte/arthur/root/sbin/usbconfig:/root/sbin/usbconfig
+        $(call find-copy-subdir-files,*,device/zte/arthur/root)
 
 # Recovery
 PRODUCT_COPY_FILES += \
-	device/zte/arthur/recovery/root/init.rc:/recovery/root/init.rc \
-	device/zte/arthur/recovery/root/ueventd.rc:/recovery/root/ueventd.rc \
-	device/zte/arthur/root/sbin/diagftmtest:/recovery/root/sbin/diagftmtest \
-	device/zte/arthur/root/sbin/hci_qcomm_init:/recovery/root/sbin/hci_qcomm_init \
-	device/zte/arthur/root/sbin/iwmulticall:/recovery/root/sbin/iwmulticall \
-	device/zte/arthur/root/sbin/iwpriv:/recovery/root/sbin/iwpriv \
-	device/zte/arthur/root/sbin/ptt_socket_app:/recovery/root/sbin/ptt_socket_app \
-	device/zte/arthur/root/sbin/rmt_storage:/recovery/root/sbin/rmt_storage \
-	device/zte/arthur/root/sbin/usbconfig:/recovery/root/sbin/usbconfig
+	$(call find-copy-subdir-files,*,device/zte/arthur/recovery/root)
 
 PRODUCT_COPY_FILES += \
         device/zte/arthur/wpa_supplicant.conf:/system/etc/wifi/wpa_supplicant.conf \
@@ -376,12 +359,17 @@ PRODUCT_COPY_FILES += \
 	device/zte/arthur/prebuilt/b08c/etc/init.qcom.fm.sh:system/etc/init.qcom.fm.sh \
 	device/zte/arthur/prebuilt/b08c/etc/init.qcom.post_boot.sh:system/etc/init.qcom.post_boot.sh \
 	device/zte/arthur/prebuilt/b08c/etc/init.qcom.sdio.sh:system/etc/init.qcom.sdio.sh \
-        device/zte/arthur/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf \
-
+        device/zte/arthur/prebuilt/b08c/etc/OperatorPolicy.xml:system/etc/OperatorPolicy.xml \
+	device/zte/arthur/prebuilt/b08c/etc/UserPolicy.xml:system/etc/UserPolicy.xml \
+        device/zte/arthur/dhcpcd.conf:system/etc/dhcpcd/dhcpcd.conf 
+        
 # B08c lib
 PRODUCT_COPY_FILES += \
 	device/zte/arthur/prebuilt/b08c/lib/bluez-plugin/audio.so:system/lib/bluez-plugin/audio.so \
 	device/zte/arthur/prebuilt/b08c/lib/bluez-plugin/input.so:system/lib/bluez-plugin/input.so \
+        device/zte/arthur/prebuilt/b08c/lib/libcne.so:system/lib/libcne.so \
+        device/zte/arthur/prebuilt/b08c/lib/libcneutils.so:system/lib/libcneutils.so \
+        device/zte/arthur/prebuilt/b08c/lib/librefcne.so:system/lib/librefcne.so \
 	device/zte/arthur/prebuilt/b08c/lib/libmmosal.so:system/lib/libmmosal.so \
 	device/zte/arthur/prebuilt/b08c/lib/libmmparser.so:system/lib/libmmparser.so \
 	device/zte/arthur/prebuilt/b08c/lib/libmmparser_divxdrmlib.so:system/lib/libmmparser_divxdrmlib.so \
@@ -410,23 +398,44 @@ PRODUCT_COPY_FILES += \
       device/zte/arthur/wifi_modules/libra.ko:system/lib/modules/libra.ko \
       device/zte/arthur/wifi_modules/libra_ftm.ko:system/lib/modules/libra_ftm.ko
 
+##### build.prop #####
 
-# Allow emulated sdcard on /data/media
+# ADB
 PRODUCT_PROPERTY_OVERRIDES += \
-        persist.fuse_sdcard=true
+  persist.service.adb.enable=1
 
 # Bluetooth
 PRODUCT_PROPERTY_OVERRIDES += \
-  ro.bt.bdaddr_path=/data/misc/bluedroid/bdaddr
+  ro.bt.bdaddr_path=/data/misc/bluedroid/bdaddr \
+  qcom.bt.dev_power_class=2 \
+  ro.qualcomm.bluetooth.dun=true \
+  ro.bluetooth.remote.autoconnect=true \
+  ro.qualcomm.bluetooth.ftp=true \
+  ro.bluetooth.request.master=true
 
-# Max Background Processes
+# Dynamic memory
 PRODUCT_PROPERTY_OVERRIDES += \
-  ro.sys.fw.bg_apps_limit=10
+   ro.dev.dmm=1 \
+   dev.dmm.dpd.trigger_delay=30
+
+# Emmc
+PRODUCT_PROPERTY_OVERRIDES += \
+   ro.emmc.sdcard.partition=16
+
+# Dalvik
+PRODUCT_PROPERTY_OVERRIDES += \
+  ro.sys.fw.bg_apps_limit=10 \
+  dalvik.vm.dexopt-data-only=1 \
+  dalvik.vm.heaptargetutilization=0.25
 
 # RIL
 PRODUCT_PROPERTY_OVERRIDES += \
+        ro.telephony.ril_class=QualcommSharedRIL \
         rild.libpath=/system/lib/libril-qc-1.so \
         rild.libargs=-d/dev/smd0 \
+        ro.telephony.ril.v3=qcomuiccstack,skipbrokendatacall,signalstrengt​h,datacall,skipnullaid \
+        ro.ril.def.preferred.network=4 \
+        ro.telephony.default_network=4 \
         persist.rild.nitz_plmn="" \
         persist.rild.nitz_long_ons_0="" \
         persist.rild.nitz_long_ons_1="" \
@@ -436,6 +445,63 @@ PRODUCT_PROPERTY_OVERRIDES += \
         persist.rild.nitz_short_ons_1="" \
         persist.rild.nitz_short_ons_2="" \
         persist.rild.nitz_short_ons_3="" \
-        ril.subscription.types=NV,RUIM \
-        ro.use_data_netmgrd=true
+        ril.subscription.types=NV \
+        ro.use_data_netmgrd=true \
+        mobiledata.interfaces=wlan0,rmnet0
+
+# CNE
+PRODUCT_PROPERTY_OVERRIDES += \
+        persist.cne.bat.range.low.med=30 \
+        persist.cne.bat.range.med.high=60 \
+        persist.cne.loc.policy.op=/system/etc/OperatorPolicy.xml \
+        persist.cne.loc.policy.user=/system/etc/UserPolicy.xml \
+        persist.cne.bwbased.rat.sel=false \
+        persist.cne.snsr.based.rat.mgt=false \
+        persist.cne.bat.based.rat.mgt=false \
+        persist.cne.rat.acq.time.out=30000 \
+        persist.cne.rat.acq.retry.tout=0 \
+        persist.cne.feature=1
+
+# Power
+PRODUCT_PROPERTY_OVERRIDES += \
+    dev.pm.dyn_samplingrate=1
+
+# Stagefright
+PRODUCT_PROPERTY_OVERRIDES += \
+       media.stagefright.enable-player=true \
+       media.stagefright.enable-meta=false \
+       media.stagefright.enable-scan=false \
+       media.stagefright.enable-http=true
+
+# wifi
+PRODUCT_PROPERTY_OVERRIDES += \
+        wifi.interface=wlan0 \
+        wlan.driver.status=ok
+
+# opengles
+PRODUCT_PROPERTY_OVERRIDES += \
+        ro.opengles.version=131072 \
+        ro.opengles.surface.rgb565=true
+
+# GPU
+PRODUCT_PROPERTY_OVERRIDES += \
+        persist.sys.NV_FPSLIMIT=60 \
+        hwui.render_dirty_regions=false \
+        hwui.disable_vsync=false \
+        hwui.print_config=choice \
+        debug.sf.hw=1 \
+        debug.composition.type=gpu \
+        debug.overlayui.enable=0 \
+        dev.pm.dyn_samplingrate=1 \
+        video.accelerate.hw=1 \
+        ro.sf.lcd_density=240 \
+        ro.sf.hwrotation=180 \
+        persist.sys.hdmi.on=0 \
+        ro.hdmi.enable=true \
+        debug.gr.numframebuffers=3 
+
+# Time
+PRODUCT_PROPERTY_OVERRIDES += \
+        persist.timed.enable=true
+
 

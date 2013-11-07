@@ -11,6 +11,9 @@ $(call inherit-product, device/zte/arthur/full_arthur.mk)
 PRODUCT_COPY_FILES+= \
     device/zte/arthur/prebuilt/files/etc/apns-conf.xml:system/etc/apns-conf.xml
 
+DEVICE_PACKAGE_OVERLAYS := vendor/cm/overlay/common
+
+
 ## Device identifier. This must come after all inclusions
 PRODUCT_DEVICE := arthur
 PRODUCT_NAME := cm_arthur

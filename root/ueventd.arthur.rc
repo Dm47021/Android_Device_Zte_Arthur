@@ -46,7 +46,7 @@
 
 
 # pmem
-/dev/adsp                    0660    system      audio
+/dev/adsp                 0660    system      audio
 /dev/pmem                 0660   system     graphics
 /dev/pmem_audio           0660   system     audio
 /dev/pmem_adsp*           0660   system     audio
@@ -56,6 +56,7 @@
 /dev/akm8975_aot             0640    compass     system
 /dev/akm8975_daemon          0640    compass     system
 /dev/block/mmcblk0p7         0660    system      system
+/dev/cam                     0660   root       camera
 /dev/cm3602                  0640    compass     system
 /dev/codec_aic3254           0660    system      audio
 /dev/control0                0660    system      audio

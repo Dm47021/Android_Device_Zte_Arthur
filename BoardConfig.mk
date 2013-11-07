@@ -33,11 +33,14 @@ TARGET_SPECIFIC_HEADER_PATH := device/zte/arthur/include
 # Camera
 BOARD_NEEDS_MEMORYHEAPPMEM := true
 BOARD_VENDOR := ZTE
+# Used in frameworks_av for zte camera hardware
+BOARD_HAVE_ZTE_CAMERA_HARDWARE := true
 USE_CAMERA_STUB := false
 TARGET_DISABLE_ARM_PIE := true
 BOARD_USES_QCOM_LEGACY_CAM_PARAMS := true
 COMMON_GLOBAL_CFLAGS += -DBINDER_COMPAT
-
+# Camera
+V4L2_BASED_LIBCAM := true
 
 #Board Settings
 TARGET_BOARD_PLATFORM := msm7x30
@@ -69,7 +72,6 @@ TARGET_ARCH := arm
 TARGET_CPU_VARIANT := scorpion
 TARGET_QCOM_DISPLAY_VARIANT := legacy
 BOARD_EGL_NEEDS_LEGACY_FB := true
-CAMERA_USES_SURFACEFLINGER_CLIENT_STUB :=true
 TARGET_ARCH_LOWMEM := true
 
 #Browser
@@ -147,7 +149,7 @@ BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := arthur
 BOARD_MOBILEDATA_INTERFACE_NAME := rmnet0
 BOARD_USES_LEGACY_RIL := true
 # Radio class.
-#BOARD_RIL_CLASS := ../../../device/zte/arthur/ril/
+BOARD_RIL_CLASS := ../../../device/zte/arthur/ril/
 
 # Stagefright
 COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE -DREFRESH_RATE=60 -DQCOM_LEGACY_OMX 
@@ -167,10 +169,6 @@ WIFI_DRIVER_MODULE_NAME := "wlan"
 WIFI_DRIVER_MODULE_ARG := ""
 WIFI_EXT_MODULE_PATH := "/system/lib/modules/librasdioif.ko"
 WIFI_EXT_MODULE_NAME := "librasdioif"
-WIFI_EXT_MODULE_ARG := ""
-WIFI_DRIVER_FW_PATH_STA := "sta"
-WIFI_DRIVER_FW_PATH_AP := "ap"
-WIFI_DRIVER_FW_PATH_P2P := "p2p"
 WIFI_PRE_LOADER := "qcom_sdio_init"
 WIFI_POST_UNLOADER := "qcom_sdio_deinit"
 
@@ -179,8 +177,8 @@ WIFI_POST_UNLOADER := "qcom_sdio_deinit"
 TARGET_BOOTANIMATION_PRELOAD := true
 
 # Inline Kernel Build
-TARGET_KERNEL_SOURCE := kernel/zte/arthur
-TARGET_KERNEL_CONFIG := warp_cm102_defconfig
+#TARGET_KERNEL_SOURCE := kernel/zte/arthur
+#TARGET_KERNEL_CONFIG := warp_cm102_defconfig
 # Kernel
 TARGET_PREBUILT_KERNEL := device/zte/arthur/kernel
 TARGET_PREBUILT_RECOVERY_KERNEL := device/zte/arthur/recovery/recovery_kernel
@@ -197,10 +195,12 @@ BOARD_FLASH_BLOCK_SIZE := 262144
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_RECOVERY_FSTAB := device/zte/arthur/root/fstab.arthur
 
+# ROM Build Info
+TARGET_IS_CHAMELEONOS := true
+
 BOARD_HAS_NO_SELECT_BUTTON := true
 # Use this flag if the board has a ext4 partition larger than 2gb
 BOARD_HAS_LARGE_FILESYSTEM := true
-
 
 # SD Card
 BOARD_HAS_SDCARD_INTERNAL := true

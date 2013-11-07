@@ -1,16 +1,13 @@
 on early-init
     mount debugfs debugfs /sys/kernel/debug
 
-# for backwards compatibility
-    export EXTERNAL_STORAGE /storage/sdcard0
-    mkdir /storage 0775 system sdcard_r
-    mkdir /storage/sdcard0 0000 system system
-    mkdir /storage/sdcard1 0000 system system
-    mkdir /sd-ext 0771 system system
-    symlink /storage/sdcard0 /sdcard
-    symlink /storage/sdcard0 /mnt/sdcard
-
 on init
+    mkdir /storage/sdcard0 0000 root root
+    export EXTERNAL_STORAGE /storage/sdcard0
+    # for backwards compatibility
+    symlink /storage/sdcard0 /mnt/sdcard
+    symlink /storage/sdcard0 /sdcard
+
 # Set permissions for persist partition
     mkdir /persist 0771 system system	
     mkdir /cache 0770 system cache
@@ -19,8 +16,6 @@ on init
     chmod 0622 /dev/log/system
 # ZTE_SYS_CHENXIHUA_001 end
 
-# DM051213JB DUN
-    mkdir /dev/dun 0666 system system
 
 on post-fs
 # This is also in the init.rc in "on post-fs-data" but if we
@@ -117,6 +112,10 @@ on post-fs
     chmod 0666 /sys/class/rfkill/rfkill1/state
     chmod 0666 /system/etc/hostapd/hostapd.conf
 
+# we will remap this as /mnt/sdcard with the sdcard fuse tool
+    mkdir /data/media 0775 media_rw media_rw
+    chown media_rw media_rw /data/media
+
     # WIFI filesystem structure
     mkdir /system/etc/wifi 0770 wifi wifi 
     chmod 0770 /system/etc/wifi 
@@ -140,6 +139,9 @@ on post-fs
 #Provide the access to hostapd.conf only to root and group
     mkdir /data/hostapd 0770 hostapd hostapd
     chmod 0660 /data/hostapd/hostapd.conf
+
+# Media Storage
+    mkdir /data/media 0770 media_rw media_rw
 
 # Create directory used by audio subsystem
     mkdir /data/misc/audio 0770 audio audio
@@ -497,22 +499,14 @@ service hwmac /system/bin/hwmac
 on property:wlan.driver.status=unloaded
     start hwmac
 
-service p2p_supplicant /system/bin/wpa_supplicant \
-        -iwlan0 -Dwext -c/data/misc/wifi/wpa_supplicant.conf -N \
-        -ip2p0 -Dwext -c/data/misc/wifi/p2p_supplicant.conf -e/data/misc/wifi/entropy.bin -puse_p2p_group_interface=1
-        #   we will start as root and wpa_supplicant will switch to user wifi
-        #   after setting up the capabilities required for WEXT
-        #   user wifi
-        #   group wifi inet keystore
-        class main
-        socket wpa_wlan0 dgram 660 wifi wifi
-        disabled
-        oneshot
-
-service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant -Dwext -iwlan0 -c/data/misc/wifi/wpa_supplicant.conf -dd
+service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
+    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -dddd \
+    -e/data/misc/wifi/entropy.bin
+    #   we will start as root and wpa_supplicant will switch to user wifi
+    #   after setting up the capabilities required for WEXT
+    #   user wifi
+    #   group wifi inet keystore
     class main
-    user root wifi
-    group wifi inet
     socket wpa_wlan0 dgram 660 wifi wifi
     disabled
     oneshot
@@ -660,6 +654,10 @@ on property:persist.ims.regmanager.mode=1
 on property:ro.data.large_tcp_window_size=true
     # Adjust socket buffer to enlarge TCP receive window for high bandwidth (e.g. DO-RevB)
     write /proc/sys/net/ipv4/tcp_adv_win_scale  1
+
+# virtual sdcard daemon running as media_rw (1023)
+service sdcard /system/bin/sdcard /data/media /mnt/shell/emulated 1023 1023
+    class late_start
 
 service thermald /system/bin/thermald
     class late_start
