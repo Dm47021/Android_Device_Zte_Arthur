@@ -148,8 +148,6 @@ BOARD_VENDOR_QCOM_GPS_LOC_API_HARDWARE := arthur
 # Ril
 BOARD_MOBILEDATA_INTERFACE_NAME := rmnet0
 BOARD_USES_LEGACY_RIL := true
-# Radio class.
-BOARD_RIL_CLASS := ../../../device/zte/arthur/ril/
 
 # Stagefright
 COMMON_GLOBAL_CFLAGS += -DQCOM_HARDWARE -DREFRESH_RATE=60 -DQCOM_LEGACY_OMX 
@@ -177,8 +175,8 @@ WIFI_POST_UNLOADER := "qcom_sdio_deinit"
 TARGET_BOOTANIMATION_PRELOAD := true
 
 # Inline Kernel Build
-#TARGET_KERNEL_SOURCE := kernel/zte/arthur
-#TARGET_KERNEL_CONFIG := warp_cm102_defconfig
+TARGET_KERNEL_SOURCE := kernel/zte/arthur
+TARGET_KERNEL_CONFIG := warp_cm102_defconfig
 # Kernel
 TARGET_PREBUILT_KERNEL := device/zte/arthur/kernel
 TARGET_PREBUILT_RECOVERY_KERNEL := device/zte/arthur/recovery/recovery_kernel

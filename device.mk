@@ -141,11 +141,34 @@ PRODUCT_PACKAGES += \
 
 # Root
 PRODUCT_COPY_FILES += \
-        $(call find-copy-subdir-files,*,device/zte/arthur/root)
+    device/zte/arthur/root/default.prop:/root/default.prop \
+    device/zte/arthur/root/init.rc:/root/init.rc \
+    device/zte/arthur/root/init.arthur.rc:/root/init.arthur.rc \
+    device/zte/arthur/root/fstab.arthur:/root/fstab.arthur \
+    device/zte/arthur/root/initlogo.rle:/root/initlogo.rle \
+    device/zte/arthur/root/init.qcom.sh:/root/init.qcom.sh \
+    device/zte/arthur/root/logo.bmp:/root/logo.bmp \
+    device/zte/arthur/root/ueventd.arthur.rc:/root/ueventd.arthur.rc \
+    device/zte/arthur/root/sbin/diagftmtest:/root/sbin/diagftmtest \
+    device/zte/arthur/root/sbin/hci_qcomm_init:/root/sbin/hci_qcomm_init \
+    device/zte/arthur/root/sbin/iwmulticall:/root/sbin/iwmulticall \
+    device/zte/arthur/root/sbin/iwpriv:/root/sbin/iwpriv \
+    device/zte/arthur/root/sbin/membank.sh:/root/sbin/membank.sh \
+    device/zte/arthur/root/sbin/ptt_socket_app:/root/sbin/ptt_socket_app \
+    device/zte/arthur/root/sbin/rmt_storage:/root/sbin/rmt_storage \
+    device/zte/arthur/root/sbin/usbconfig:/root/sbin/usbconfig
 
 # Recovery
 PRODUCT_COPY_FILES += \
-	$(call find-copy-subdir-files,*,device/zte/arthur/recovery/root)
+	device/zte/arthur/recovery/root/init.rc:/recovery/root/init.rc \
+	device/zte/arthur/recovery/root/ueventd.rc:/recovery/root/ueventd.rc \
+	device/zte/arthur/root/sbin/diagftmtest:/recovery/root/sbin/diagftmtest \
+	device/zte/arthur/root/sbin/hci_qcomm_init:/recovery/root/sbin/hci_qcomm_init \
+	device/zte/arthur/root/sbin/iwmulticall:/recovery/root/sbin/iwmulticall \
+	device/zte/arthur/root/sbin/iwpriv:/recovery/root/sbin/iwpriv \
+	device/zte/arthur/root/sbin/ptt_socket_app:/recovery/root/sbin/ptt_socket_app \
+	device/zte/arthur/root/sbin/rmt_storage:/recovery/root/sbin/rmt_storage \
+	device/zte/arthur/root/sbin/usbconfig:/recovery/root/sbin/usbconfig
 
 PRODUCT_COPY_FILES += \
         device/zte/arthur/wpa_supplicant.conf:/system/etc/wifi/wpa_supplicant.conf \
