@@ -76,16 +76,6 @@ PRODUCT_PACKAGES += \
         audio_policy.conf \
         libaudioutils
 
-
-## Bluetooth
-PRODUCT_PACKAGES += \
-    bluetoothd \
-    libbluetoothd \
-    hcitool \
-    hciconfig \
-    hciattach \
-    javax.btobex
-
 # Camera
 PRODUCT_PACKAGES += \
     LegacyCamera \
@@ -404,15 +394,6 @@ PRODUCT_COPY_FILES += \
 	device/zte/arthur/prebuilt/b08c/lib/libOmxQcelp13Enc.so:system/lib/libOmxQcelp13Enc.so \
 	device/zte/arthur/prebuilt/b08c/lib/libOmxWmaDec.so:system/lib/libOmxWmaDec.so \
         device/zte/arthur/prebuilt/files/lib/hw/lights.msm7x30.so:system/lib/hw/lights.msm7x30.so \
-
-# Bluetooth configs
-PRODUCT_COPY_FILES += \
-    system/bluetooth/data/audio.conf:system/etc/bluetooth/audio.conf \
-    system/bluetooth/data/auto_pairing.conf:system/etc/bluetooth/auto_pairing.conf \
-    system/bluetooth/data/blacklist.conf:system/etc/bluetooth/blacklist.conf \
-    system/bluetooth/data/input.conf:system/etc/bluetooth/input.conf \
-    system/bluetooth/data/main.le.conf:system/etc/bluetooth/main.conf \
-    system/bluetooth/data/network.conf:system/etc/bluetooth/network.conf
 
 ## PREBUILT WiFi Modules
 

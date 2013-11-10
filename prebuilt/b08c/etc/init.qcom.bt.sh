@@ -26,9 +26,6 @@
 # ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #
 
-#Read the arguments passed to the script
-config="$1"
-
 BLUETOOTH_SLEEP_PATH=/proc/bluetooth/sleep/proto
 LOG_TAG="qcom-bluetooth"
 LOG_NAME="${0}:"
@@ -57,22 +54,6 @@ program_bdaddr ()
   logi "Bluetooth Address programmed successfully"
 }
 
-config_bt ()
-{
-  setprop ro.qualcomm.bluetooth.opp true
-  setprop ro.qualcomm.bluetooth.hfp true
-  setprop ro.qualcomm.bluetooth.hsp true
-  setprop ro.qualcomm.bluetooth.pbap true
-  setprop ro.qualcomm.bluetooth.ftp true
-  setprop ro.qualcomm.bluetooth.map true
-  setprop ro.qualcomm.bluetooth.nap true
-  setprop ro.qualcomm.bluetooth.sap true
-  setprop ro.qualcomm.bluetooth.dun true
-
-  logi "Bluetooth stack is bluez"
-  setprop ro.qc.bluetooth.stack bluez
-}
-
 start_hciattach ()
 {
   /system/bin/hciattach -n $BTS_DEVICE $BTS_TYPE $BTS_BAUD &
@@ -89,16 +70,6 @@ kill_hciattach ()
   kill -TERM $hciattach_pid
   # this shell doesn't exit now -- wait returns for normal exit
 }
-
-logi "init.qcom.bt.sh config = $config"
-case "$config" in
-    "onboot")
-        config_bt
-        exit 0
-        ;;
-    *)
-        ;;
-esac
 
 # mimic hciattach options parsing -- maybe a waste of effort
 USAGE="hciattach [-n] [-p] [-b] [-t timeout] [-s initial_speed] <tty> <type | id> [speed] [flow|noflow] [bdaddr]"
