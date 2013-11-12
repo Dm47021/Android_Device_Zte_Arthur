@@ -429,7 +429,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 # Dalvik
 PRODUCT_PROPERTY_OVERRIDES += \
   ro.sys.fw.bg_apps_limit=10 \
+  dalvik.vm.checkjni=0 \
   dalvik.vm.dexopt-data-only=1 \
+  dalvik.vm.dexopt-flags=v=a,o=v,m=y,u=y \
+  dalvik.vm.execution-mode=int:jit \
   dalvik.vm.heaptargetutilization=0.25
 
 # RIL
