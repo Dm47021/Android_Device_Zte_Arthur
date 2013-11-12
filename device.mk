@@ -369,6 +369,7 @@ PRODUCT_COPY_FILES += \
 	device/zte/arthur/prebuilt/b08c/etc/thermald.conf:system/etc/thermald.conf \
 	device/zte/arthur/prebuilt/b08c/etc/init.qcom.bt.sh:system/etc/init.qcom.bt.sh \
 	device/zte/arthur/prebuilt/b08c/etc/init.qcom.coex.sh:system/etc/init.qcom.coex.sh \
+        device/zte/arthur/prebuilt/b08c/etc/init.qcom.efs.sync.sh:system/etc/init.qcom.efs.sync.sh \
 	device/zte/arthur/prebuilt/b08c/etc/init.qcom.fm.sh:system/etc/init.qcom.fm.sh \
 	device/zte/arthur/prebuilt/b08c/etc/init.qcom.post_boot.sh:system/etc/init.qcom.post_boot.sh \
 	device/zte/arthur/prebuilt/b08c/etc/init.qcom.sdio.sh:system/etc/init.qcom.sdio.sh \
