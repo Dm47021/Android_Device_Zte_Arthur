@@ -489,24 +489,28 @@ service hwmac /system/bin/hwmac
 on property:wlan.driver.status=unloaded
     start hwmac
 
-service wpa_supplicant /system/bin/logwrapper /system/bin/wpa_supplicant \
-    -iwlan0 -Dnl80211 -c/data/misc/wifi/wpa_supplicant.conf -dddd \
-    -e/data/misc/wifi/entropy.bin
-    #   we will start as root and wpa_supplicant will switch to user wifi
-    #   after setting up the capabilities required for WEXT
-    #   user wifi
-    #   group wifi inet keystore
+service wpa_supplicant /system/bin/wpa_supplicant -dd -Dwext -iwlan0 -c /data/misc/wifi/wpa_supplicant.conf
     class main
     socket wpa_wlan0 dgram 660 wifi wifi
     disabled
     oneshot
 
-service dhcpcd_wlan0 /system/bin/dhcpcd -BKL wlan0
-    class core
+service dhcpcd_wlan0 /system/bin/dhcpcd -ABKLG
+    class main
     disabled
     oneshot
 
-service iprenew_wlan0 /system/bin/dhcpcd -n wlan0
+service dhcpcd_p2p /system/bin/dhcpcd -ABKLG
+    class main
+    disabled
+    oneshot
+
+service iprenew_wlan0 /system/bin/dhcpcd -n
+    class main
+    disabled
+    oneshot
+
+service iprenew_p2p /system/bin/dhcpcd -n p2p
     class main
     disabled
     oneshot
@@ -516,13 +520,17 @@ service iprenew_bt-pan /system/bin/dhcpcd -n
     disabled
     oneshot
 
+service iprenew_p2p /system/bin/dhcpcd -n
+    class main
+    disabled
+    oneshot
+
 #Start service for loc_api_app
 service loc_api_app /system/bin/loc_api_app
     class late_start
     user root
 
 service wiperiface /system/bin/wiperiface
-    class late_start
     user location
     group qcom_oncrpc
     oneshot
@@ -576,6 +584,12 @@ service qcom-post-boot /system/bin/sh /system/etc/init.qcom.post_boot.sh
     disabled
     oneshot
 
+service wifi-sdio-on /system/bin/sh /system/etc/init.qcom.sdio.sh
+    class late_start
+    group wifi inet
+    disabled
+    oneshot
+
 service getlog /system/bin/getlogtofile
     class late_start
     user root
@@ -618,7 +632,6 @@ on property:ro.hdmi.enable=true
 
 service hostapd /system/bin/hostapd -dddd /data/hostapd/hostapd.conf
     class late_start
-    socket hostapd_wlan0 dgram 660 root wifi
     user root
     group root
     oneshot
